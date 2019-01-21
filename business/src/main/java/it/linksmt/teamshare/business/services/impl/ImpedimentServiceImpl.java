@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.linksmt.converter.ImpedimentConverter;
 import it.linksmt.teamshare.business.dtos.ImpedimentDto;
 import it.linksmt.teamshare.business.request.ImpedimentRequestDto;
 import it.linksmt.teamshare.business.services.ImpedimentService;
+import it.linksmt.teamshare.converter.ImpedimentConverter;
 import it.linksmt.teamshare.entities.Impediment;
 import it.linksmt.teamshare.repository.ImpedimentRepository;
 @Service

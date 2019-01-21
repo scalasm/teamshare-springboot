@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.linksmt.converter.NoteConverter;
 import it.linksmt.teamshare.business.dtos.NoteDto;
 import it.linksmt.teamshare.business.request.NoteRequestDto;
 import it.linksmt.teamshare.business.services.NoteService;
+import it.linksmt.teamshare.converter.NoteConverter;
 import it.linksmt.teamshare.entities.Note;
 import it.linksmt.teamshare.repository.NoteRepository;
 

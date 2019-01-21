@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.linksmt.converter.UserConverter;
 import it.linksmt.teamshare.business.dtos.UserDto;
 import it.linksmt.teamshare.business.request.UserRequestDto;
 import it.linksmt.teamshare.business.services.UserService;
+import it.linksmt.teamshare.converter.UserConverter;
 import it.linksmt.teamshare.entities.User;
 import it.linksmt.teamshare.repository.UserRepository;
 

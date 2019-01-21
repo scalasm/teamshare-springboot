@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.linksmt.converter.PostConverter;
 import it.linksmt.teamshare.business.dtos.PostDto;
 import it.linksmt.teamshare.business.request.PostRequestDto;
 import it.linksmt.teamshare.business.services.PostService;
+import it.linksmt.teamshare.converter.PostConverter;
 import it.linksmt.teamshare.entities.Post;
 import it.linksmt.teamshare.entities.User;
 import it.linksmt.teamshare.repository.PostRepository;

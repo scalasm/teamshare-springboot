@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.linksmt.converter.ContentConverter;
 import it.linksmt.teamshare.business.dtos.ContentDto;
 import it.linksmt.teamshare.business.request.ContentRequestDto;
 import it.linksmt.teamshare.business.services.ContentService;
+import it.linksmt.teamshare.converter.ContentConverter;
 import it.linksmt.teamshare.entities.Content;
 import it.linksmt.teamshare.repository.ContentRepository;
 
