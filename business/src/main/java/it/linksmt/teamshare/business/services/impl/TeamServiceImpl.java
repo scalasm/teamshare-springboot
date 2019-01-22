@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.linksmt.teamshare.business.dtos.TeamDto;
@@ -13,8 +12,9 @@ import it.linksmt.teamshare.business.services.TeamService;
 import it.linksmt.teamshare.converter.TeamConverter;
 import it.linksmt.teamshare.entities.Team;
 import it.linksmt.teamshare.repository.TeamRepository;
+
 @Service
-@Transactional(propagation=Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+@Transactional
 public class TeamServiceImpl implements TeamService {
 	@Autowired
 	TeamRepository teamRepository;

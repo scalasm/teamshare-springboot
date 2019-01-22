@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.linksmt.teamshare.business.dtos.ActivityDto;
@@ -16,7 +15,7 @@ import it.linksmt.teamshare.entities.Activity;
 import it.linksmt.teamshare.repository.ActivityRepository;
 
 @Service
-@Transactional(propagation=Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+@Transactional
 public class ActivityServiceImpl implements ActivityService {
 
 	@Autowired

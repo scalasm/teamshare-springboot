@@ -2,11 +2,8 @@ package it.linksmt.teamshare.business.services.impl;
 
 import java.util.List;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.linksmt.teamshare.business.dtos.CommentDto;
@@ -17,7 +14,7 @@ import it.linksmt.teamshare.entities.Comment;
 import it.linksmt.teamshare.repository.CommentRepository;
 
 @Service
-@Transactional(propagation=Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+@Transactional
 public class CommentServiceImpl implements CommentService {
 	
 	@Autowired

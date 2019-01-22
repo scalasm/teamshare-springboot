@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.linksmt.teamshare.business.dtos.UserDto;
@@ -16,12 +15,11 @@ import it.linksmt.teamshare.entities.User;
 import it.linksmt.teamshare.repository.UserRepository;
 
 @Service
-@Transactional(propagation=Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+@Transactional
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserRepository userRepository;
-
 
 	@Override
     public List<UserDto> searchUsers(String email, String nome, String cognome) {

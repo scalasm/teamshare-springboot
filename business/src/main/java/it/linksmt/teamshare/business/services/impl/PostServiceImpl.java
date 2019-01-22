@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.linksmt.teamshare.business.dtos.PostDto;
 import it.linksmt.teamshare.business.request.PostRequestDto;
@@ -14,6 +15,7 @@ import it.linksmt.teamshare.entities.User;
 import it.linksmt.teamshare.repository.PostRepository;
 
 @Service
+@Transactional
 public class PostServiceImpl implements PostService {
 	@Autowired
 	private PostRepository postRepository;
