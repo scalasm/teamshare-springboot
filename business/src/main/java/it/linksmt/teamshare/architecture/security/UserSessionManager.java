@@ -6,13 +6,18 @@
  * Contributors:
  *     Links Management & Technology S.p.A. - initial API and implementation
  *******************************************************************************/
-package it.linksmt.teamshare.architecture;
+package it.linksmt.teamshare.architecture.security;
 
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author mario
  */
-public class MyRestExceptionHandler extends ResponseEntityExceptionHandler {
-	
+public interface UserSessionManager {
+
+	void storeSession( @NotNull MyUserDetails userDetails );
+
+	MyUserDetails getSessionByJwt( @NotBlank String jwt );
+
 }

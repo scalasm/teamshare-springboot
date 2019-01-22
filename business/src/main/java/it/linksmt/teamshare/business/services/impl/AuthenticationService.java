@@ -11,6 +11,7 @@ package it.linksmt.teamshare.business.services.impl;
 import javax.validation.Valid;
 
 import it.linksmt.teamshare.architecture.MySecurityException;
+import it.linksmt.teamshare.business.dtos.UserAuthenticationDto;
 import it.linksmt.teamshare.business.request.LoginByEmailAndPasswordDto;
 
 /**

@@ -6,8 +6,9 @@
  * Contributors:
  *     Links Management & Technology S.p.A. - initial API and implementation
  *******************************************************************************/
-package it.linksmt.teamshare.business.services.impl;
+package it.linksmt.teamshare.business.dtos;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Date;
  * 
  * @author mario
  */
-public class UserAuthenticationDto {
+public class UserAuthenticationDto implements Serializable {
 	private String jwt;
 
 	private Integer id;

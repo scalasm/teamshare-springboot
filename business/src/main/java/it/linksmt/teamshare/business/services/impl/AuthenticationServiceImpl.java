@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.linksmt.teamshare.architecture.MySecurityException;
+import it.linksmt.teamshare.architecture.security.MyUserDetails;
+import it.linksmt.teamshare.architecture.security.UserSessionManager;
+import it.linksmt.teamshare.business.dtos.UserAuthenticationDto;
 import it.linksmt.teamshare.business.request.LoginByEmailAndPasswordDto;
 import it.linksmt.teamshare.entities.User;
 import it.linksmt.teamshare.repository.UserRepository;
@@ -29,6 +32,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private UserSessionManager sessionManager;
+	
 	/* (non-Javadoc)
 	 * @see it.linksmt.teamshare.business.services.impl.AuthenticationService#login(java.lang.String, java.lang.String)
 	 */
@@ -42,7 +48,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		if (!password.equals( user.getPassword() )) {
 			throw new MySecurityException( "Username e/o password non corretta/i!" );
 		}
-		return createUserAuthentication( user ); 
+		
+		UserAuthenticationDto userAuthentication = createUserAuthentication( user );
+
+		MyUserDetails userDetails = new MyUserDetails( userAuthentication );
+		sessionManager.storeSession( userDetails );
+		
+		return userAuthentication; 
 	}
 
 	/* (non-Javadoc)
@@ -59,7 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		ua.setJwt( createJwt( user ) );
 		ua.setCognome( user.getCognome() );
 		ua.setNome( user.getNome() );
-		ua.setEmail( ua.getEmail() );
+		ua.setEmail( user.getEmail() );
 		ua.setDataNascita( user.getDataNascita() );
 		ua.setId( user.getId() );
 		
