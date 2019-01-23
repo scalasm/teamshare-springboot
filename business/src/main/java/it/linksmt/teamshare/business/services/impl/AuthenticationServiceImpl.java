@@ -8,6 +8,8 @@
  *******************************************************************************/
 package it.linksmt.teamshare.business.services.impl;
 
+import java.util.UUID;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
@@ -79,6 +81,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	private String createJwt( User user ) {
-		return "TODO Create me!!!";
+		return UUID.randomUUID().toString();
 	}
 }
