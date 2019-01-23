@@ -14,6 +14,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ import it.linksmt.teamshare.architecture.security.MyUserDetails;
 import it.linksmt.teamshare.architecture.security.UserSessionManager;
 import it.linksmt.teamshare.business.dtos.UserAuthenticationDto;
 import it.linksmt.teamshare.business.request.LoginByEmailAndPasswordDto;
+import it.linksmt.teamshare.business.services.events.UserLoggedInEvent;
 import it.linksmt.teamshare.entities.User;
 import it.linksmt.teamshare.repository.UserRepository;
 
@@ -36,6 +39,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Autowired
 	private UserSessionManager sessionManager;
+	
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
 	
 	/* (non-Javadoc)
 	 * @see it.linksmt.teamshare.business.services.impl.AuthenticationService#login(java.lang.String, java.lang.String)
@@ -55,6 +61,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 		MyUserDetails userDetails = new MyUserDetails( userAuthentication );
 		sessionManager.storeSession( userDetails );
+		
+		eventPublisher.publishEvent( new UserLoggedInEvent( userAuthentication ) );
 		
 		return userAuthentication; 
 	}
