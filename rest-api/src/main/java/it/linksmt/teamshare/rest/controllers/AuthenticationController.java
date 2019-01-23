@@ -8,6 +8,8 @@
  *******************************************************************************/
 package it.linksmt.teamshare.rest.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +26,11 @@ import it.linksmt.teamshare.business.services.impl.AuthenticationService;
 @RestController
 @RequestMapping( "/public/authentication" )
 public class AuthenticationController {
-	
 	@Autowired
 	private AuthenticationService authenticationService;
 	
 	@PostMapping( "/login" )
-	public UserAuthenticationDto login( @RequestBody LoginByEmailAndPasswordDto request ) {
+	public UserAuthenticationDto login( @RequestBody @Valid LoginByEmailAndPasswordDto request ) {
 		return authenticationService.login( request );
 	}
 }

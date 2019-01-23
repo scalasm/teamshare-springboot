@@ -15,7 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import it.linksmt.teamshare.architecture.security.MyJwtAuthenticationProvider;
@@ -39,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 	 */
 	@Override
 	protected void configure( HttpSecurity http ) throws Exception {
+		//@formatter:off
 		http
 			.csrf().disable()
 		.headers()
@@ -49,8 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 			.addFilterBefore( jwtFilter, BasicAuthenticationFilter.class )
 			.authorizeRequests()
 			.antMatchers( "/public/**" ).permitAll() // Logged and anonymous users
-			.antMatchers( "/system/**" ).anonymous() // XXX For anonymous external systems only: we may want a custom role?
 			.antMatchers( "/private/**" ).authenticated(); // Authenticated users only
+		//@formatter:on
 	}
 	
 	/* (non-Javadoc)
@@ -60,4 +61,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 	protected void configure( AuthenticationManagerBuilder auth ) throws Exception {
 		auth.authenticationProvider( authenticationProvider );
 	}
+	
+	/* (non-Javadoc)
+     * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurer#addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry)
+     */
+    @Override
+    public void addCorsMappings( CorsRegistry registry ) {
+		//@formatter:off
+        registry
+			.addMapping( "/**" )
+			.allowedMethods( "HEAD", "GET", "PUT", "POST", "DELETE", "PATCH" );
+		//@formatter:on
+    }
 }

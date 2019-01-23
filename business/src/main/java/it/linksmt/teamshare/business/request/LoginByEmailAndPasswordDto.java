@@ -8,6 +8,7 @@
  *******************************************************************************/
 package it.linksmt.teamshare.business.request;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotBlank;
  */
 public class LoginByEmailAndPasswordDto {
 	@NotBlank
+	@Email
 	private String email;
 	
 	@NotBlank
