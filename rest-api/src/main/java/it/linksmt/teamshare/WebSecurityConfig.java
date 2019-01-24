@@ -8,7 +8,13 @@
  *******************************************************************************/
 package it.linksmt.teamshare;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.NoSuchPaddingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +24,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import it.linksmt.teamshare.architecture.security.JwtConfigProperties;
 import it.linksmt.teamshare.architecture.security.MyJwtAuthenticationProvider;
+import it.linksmt.teamshare.architecture.security.impl.StringEncryptorImpl;
 import it.linksmt.teamshare.architecture.web.MyJwtSecurityFilter;
 
 /**
@@ -34,6 +42,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 	@Autowired
 	private MyJwtSecurityFilter jwtFilter;
 	
+	@Bean
+	StringEncryptorImpl jwtStringEncryptor( JwtConfigProperties jwtProperties ) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException {
+		return new StringEncryptorImpl( jwtProperties.getSecretKey(), 16, "AES" );
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
 	 */
@@ -41,7 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 	protected void configure( HttpSecurity http ) throws Exception {
 		//@formatter:off
 		http
-			.cors().disable()
+			.cors()
+		.and()
 			.csrf().disable()
 		.headers()
 			.frameOptions().disable()
@@ -72,7 +86,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 		//@formatter:off
         registry
 			.addMapping( "/**" )
-			.allowedMethods( "HEAD", "GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS" );
+			.allowedMethods( "*" )
+			.allowedHeaders( "*" )
+			.allowedOrigins( "*" );
 		//@formatter:on
     }
 }

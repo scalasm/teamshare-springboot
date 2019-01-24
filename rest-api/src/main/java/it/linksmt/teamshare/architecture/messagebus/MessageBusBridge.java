@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import it.linksmt.teamshare.business.events.EntityCreatedEvent;
 import it.linksmt.teamshare.business.events.UserLoggedInEvent;
 
 /**
@@ -30,5 +31,10 @@ public class MessageBusBridge {
 		String fullName = event.getSource().getNome() + " " + event.getSource().getCognome();
 		
 		bus.broadcast( new UserLoggedInMessage( event.getSource().getId(), fullName ) );
+	}
+
+	@EventListener
+	public void onEntityCreated( EntityCreatedEvent event ) {
+		bus.broadcast( new EntityCreatedMessage( event.getSource() ) );
 	}
 }

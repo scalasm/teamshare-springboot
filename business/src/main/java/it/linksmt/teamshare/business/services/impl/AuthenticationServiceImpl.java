@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.linksmt.teamshare.architecture.MySecurityException;
+import it.linksmt.teamshare.architecture.security.JwtHelper;
 import it.linksmt.teamshare.architecture.security.MyUserDetails;
 import it.linksmt.teamshare.architecture.security.UserSessionManager;
 import it.linksmt.teamshare.business.dtos.UserAuthenticationDto;
@@ -42,6 +43,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
+	
+	@Autowired
+	private JwtHelper jwtHelper;
 	
 	/* (non-Javadoc)
 	 * @see it.linksmt.teamshare.business.services.impl.AuthenticationService#login(java.lang.String, java.lang.String)
@@ -89,6 +93,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	private String createJwt( User user ) {
+		
+		
 		return UUID.randomUUID().toString();
 	}
 }

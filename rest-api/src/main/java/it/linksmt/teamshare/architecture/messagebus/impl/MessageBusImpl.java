@@ -21,6 +21,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.util.Assert;
 
 import it.linksmt.teamshare.architecture.messagebus.MessageBus;
+import it.linksmt.teamshare.architecture.messagebus.TypedMessage;
 
 /**
  * Un facade che permette di inviare messaggi ai client semplificando l'uso dei web socket.
@@ -30,17 +31,27 @@ import it.linksmt.teamshare.architecture.messagebus.MessageBus;
 public class MessageBusImpl implements MessageBus {
 	private static final Logger LOG = LoggerFactory.getLogger( MessageBusImpl.class );
 	
-	public static class Message {
+	public static class MessageWrapper {
 		private final Date timestamp;
 		private final String type;
 		private final Object payload;
 
-		public Message( Object payload ) {
+		public MessageWrapper( Object payload ) {
 			this.timestamp = new Date();
-			this.type = payload.getClass().getSimpleName();
 			this.payload = payload;
+			if (payload instanceof TypedMessage) {
+				this.type = ((TypedMessage) payload).getType();
+			} else {
+				this.type = payload.getClass().getSimpleName();
+			}
 		}
 
+		public MessageWrapper( Object payload, String type ) {
+			this.timestamp = new Date();
+			this.type = type;
+			this.payload = payload;
+		}
+		
 		public Date getTimestamp() {
 			return timestamp;
 		}
@@ -56,7 +67,6 @@ public class MessageBusImpl implements MessageBus {
 	
 	private String rootTopic;
 
-	@Autowired
 	public void setRootTopic( String rootTopic ) {
 		this.rootTopic = rootTopic;
 	}
@@ -74,14 +84,13 @@ public class MessageBusImpl implements MessageBus {
 	 */
 	@Override
 	public void broadcast( @NotEmpty String destinationTopic, @NotNull Object what ) {
-		Assert.isTrue(  destinationTopic.startsWith( rootTopic ), 
-				String.format( "Destination topic must begin with configured root topic (%s)", rootTopic ) );
-
-		Message message = new Message( what );
-
-		LOG.debug( "Broadcasting event {} to topic {} ...", message.getType(), destinationTopic );
+		String eventTopic = rootTopic + "/" + destinationTopic;
 		
-		messagingTemplate.convertAndSend( destinationTopic, message );
+		MessageWrapper message = new MessageWrapper( what );
+
+		LOG.debug( "Broadcasting event {} to topic {} ...", message.getType(), eventTopic );
+		
+		messagingTemplate.convertAndSend( eventTopic, message );
 	}
 	
 	/* (non-Javadoc)
@@ -89,7 +98,14 @@ public class MessageBusImpl implements MessageBus {
 	 */
 	@Override
 	public void broadcast( @NotNull Object what ) {
-		String eventTopic = rootTopic + "/" + what.getClass().getSimpleName();
+		String subTopic = null;
+		if (what instanceof TypedMessage) {
+			subTopic = ((TypedMessage) what).getType();
+		} else {
+			subTopic = what.getClass().getSimpleName();
+		}
+		
+		String eventTopic = subTopic;
 		
 		broadcast( eventTopic, what );
 	}
