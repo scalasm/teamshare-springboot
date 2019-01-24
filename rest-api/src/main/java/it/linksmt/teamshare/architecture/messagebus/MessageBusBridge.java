@@ -6,25 +6,33 @@
  * Contributors:
  *     Links Management & Technology S.p.A. - initial API and implementation
  *******************************************************************************/
-package it.linksmt.teamshare.eventbus;
+package it.linksmt.teamshare.architecture.messagebus;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import it.linksmt.teamshare.business.services.events.UserLoggedInEvent;
 
 /**
+ * Un ponte tra gli {@link ApplicationEvent} definiti internamente nel backend e i messaggi inviati dal backend ai client utilizzando i web socket.
+ * 
  * @author mario
  */
-@Controller
-public class EventBusController {
+@Component
+public class MessageBusBridge {
+	@Autowired
+	private MessageBus bus;
 	
 	@EventListener
-	@SendTo( "/events/UserLoggedIn" )
-	public UserLoggedInMessage onUserLoggedIn( UserLoggedInEvent event ) {
+	@MessageMapping( )
+	@SendTo( "/" )
+	public void onUserLoggedIn( UserLoggedInEvent event ) {
 		String fullName = event.getSource().getNome() + " " + event.getSource().getCognome();
 		
-		return new UserLoggedInMessage( event.getSource().getId(), fullName );
+		bus.broadcast( new UserLoggedInMessage( event.getSource().getId(), fullName ) );
 	}
 }

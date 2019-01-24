@@ -6,7 +6,7 @@
  * Contributors:
  *     Links Management & Technology S.p.A. - initial API and implementation
  *******************************************************************************/
-package it.linksmt.teamshare.eventbus;
+package it.linksmt.teamshare.architecture.messagebus;
 
 import java.util.Date;
 

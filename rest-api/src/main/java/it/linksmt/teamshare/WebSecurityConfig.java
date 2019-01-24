@@ -41,6 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 	protected void configure( HttpSecurity http ) throws Exception {
 		//@formatter:off
 		http
+			.cors().disable()
 			.csrf().disable()
 		.headers()
 			.frameOptions().disable()
@@ -50,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 			.addFilterBefore( jwtFilter, BasicAuthenticationFilter.class )
 			.authorizeRequests()
 			.antMatchers( "/public/**" ).permitAll() // Logged and anonymous users
+			.antMatchers( "/ws/**" ).permitAll() // Logged and anonymous users
 			.antMatchers( "/private/**" ).authenticated(); // Authenticated users only
 		//@formatter:on
 	}
@@ -70,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 		//@formatter:off
         registry
 			.addMapping( "/**" )
-			.allowedMethods( "HEAD", "GET", "PUT", "POST", "DELETE", "PATCH" );
+			.allowedMethods( "HEAD", "GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS" );
 		//@formatter:on
     }
 }
