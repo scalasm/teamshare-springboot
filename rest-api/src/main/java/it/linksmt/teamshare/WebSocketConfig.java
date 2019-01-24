@@ -24,7 +24,6 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
-import it.linksmt.teamshare.architecture.messagebus.ApplicationTopics;
 import it.linksmt.teamshare.architecture.messagebus.MessageBus;
 import it.linksmt.teamshare.architecture.messagebus.impl.MessageBusImpl;
 
@@ -36,11 +35,13 @@ import it.linksmt.teamshare.architecture.messagebus.impl.MessageBusImpl;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+	public static final String ROOT_TOPIC = "/events";
 
 	@Bean
-	MessageBus messageBus() {
+	public MessageBus messageBus() {
 		MessageBusImpl bus = new MessageBusImpl();
-		bus.setDefaultTopic( ApplicationTopics.ROOT_TOPIC );
+		bus.setRootTopic( ROOT_TOPIC );
+		
 		return bus;
 	}
 	
@@ -49,7 +50,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	 */
 	@Override
 	public void configureMessageBroker( MessageBrokerRegistry config ) {
-		config.enableSimpleBroker( ApplicationTopics.ROOT_TOPIC );
+		config.enableSimpleBroker( ROOT_TOPIC );
 		config.setApplicationDestinationPrefixes( "/ts" ); // ts == TeamShare
 	}
 
@@ -71,8 +72,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Bean
 	public DefaultHandshakeHandler defaultHandshakeHandler() {
 		return new DefaultHandshakeHandler() {
-			@SuppressWarnings( "unused" )
-			public boolean beforeHandshake( ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map attributes )
+			@SuppressWarnings( { "unused", "unchecked" } )
+			public boolean beforeHandshake( ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, @SuppressWarnings( "rawtypes" ) Map attributes )
 					throws Exception {
 				if (request instanceof ServletServerHttpRequest) {
 					ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;

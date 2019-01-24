@@ -10,6 +10,7 @@ package it.linksmt.teamshare.architecture.messagebus.impl;
 
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -19,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.util.Assert;
 
-import it.linksmt.teamshare.architecture.messagebus.ApplicationTopics;
 import it.linksmt.teamshare.architecture.messagebus.MessageBus;
 
 /**
@@ -54,13 +54,19 @@ public class MessageBusImpl implements MessageBus {
 		}
 	}
 	
+	private String rootTopic;
+
+	@Autowired
+	public void setRootTopic( String rootTopic ) {
+		this.rootTopic = rootTopic;
+	}
+	
 	@Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
-	private String defaultTopic;
-
-	public void setDefaultTopic( String defaultTopic ) {
-		this.defaultTopic = defaultTopic;
+	@PostConstruct
+	public void checkConfiguration() {
+		Assert.notNull( rootTopic, "Root topic not set: please configure it!" );
 	}
 	
 	/* (non-Javadoc)
@@ -68,7 +74,14 @@ public class MessageBusImpl implements MessageBus {
 	 */
 	@Override
 	public void broadcast( @NotEmpty String destinationTopic, @NotNull Object what ) {
-		messagingTemplate.convertAndSend( destinationTopic, new Message( what ) );
+		Assert.isTrue(  destinationTopic.startsWith( rootTopic ), 
+				String.format( "Destination topic must begin with configured root topic (%s)", rootTopic ) );
+
+		Message message = new Message( what );
+
+		LOG.debug( "Broadcasting event {} to topic {} ...", message.getType(), destinationTopic );
+		
+		messagingTemplate.convertAndSend( destinationTopic, message );
 	}
 	
 	/* (non-Javadoc)
@@ -76,9 +89,7 @@ public class MessageBusImpl implements MessageBus {
 	 */
 	@Override
 	public void broadcast( @NotNull Object what ) {
-		Assert.notNull( defaultTopic, "No default topic defined!" );
-
-		String eventTopic = ApplicationTopics.ROOT_TOPIC + "/" + what.getClass().getSimpleName();
+		String eventTopic = rootTopic + "/" + what.getClass().getSimpleName();
 		
 		broadcast( eventTopic, what );
 	}

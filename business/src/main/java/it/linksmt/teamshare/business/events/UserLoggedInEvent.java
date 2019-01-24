@@ -6,7 +6,7 @@
  * Contributors:
  *     Links Management & Technology S.p.A. - initial API and implementation
  *******************************************************************************/
-package it.linksmt.teamshare.business.services.events;
+package it.linksmt.teamshare.business.events;
 
 import org.springframework.context.ApplicationEvent;
 

@@ -11,11 +11,9 @@ package it.linksmt.teamshare.architecture.messagebus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
-import it.linksmt.teamshare.business.services.events.UserLoggedInEvent;
+import it.linksmt.teamshare.business.events.UserLoggedInEvent;
 
 /**
  * Un ponte tra gli {@link ApplicationEvent} definiti internamente nel backend e i messaggi inviati dal backend ai client utilizzando i web socket.
@@ -28,8 +26,6 @@ public class MessageBusBridge {
 	private MessageBus bus;
 	
 	@EventListener
-	@MessageMapping( )
-	@SendTo( "/" )
 	public void onUserLoggedIn( UserLoggedInEvent event ) {
 		String fullName = event.getSource().getNome() + " " + event.getSource().getCognome();
 		

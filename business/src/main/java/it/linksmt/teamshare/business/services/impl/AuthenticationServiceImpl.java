@@ -23,8 +23,8 @@ import it.linksmt.teamshare.architecture.MySecurityException;
 import it.linksmt.teamshare.architecture.security.MyUserDetails;
 import it.linksmt.teamshare.architecture.security.UserSessionManager;
 import it.linksmt.teamshare.business.dtos.UserAuthenticationDto;
+import it.linksmt.teamshare.business.events.UserLoggedInEvent;
 import it.linksmt.teamshare.business.request.LoginByEmailAndPasswordDto;
-import it.linksmt.teamshare.business.services.events.UserLoggedInEvent;
 import it.linksmt.teamshare.entities.User;
 import it.linksmt.teamshare.repository.UserRepository;
 
