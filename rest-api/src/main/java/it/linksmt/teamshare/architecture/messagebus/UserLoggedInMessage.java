@@ -8,22 +8,16 @@
  *******************************************************************************/
 package it.linksmt.teamshare.architecture.messagebus;
 
-import java.util.Date;
-
 /**
  * @author mario
  *
  */
 public class UserLoggedInMessage {
-
-	private final Date timestamp;
+	private final Integer userId;
 	
-	private Integer userId;
-	
-	private String userName;
+	private final String userName;
 	
 	public UserLoggedInMessage( Integer userId, String userName ) {
-		this.timestamp = new Date();
 		this.userId = userId;
 		this.userName = userName;
 	}
@@ -32,19 +26,7 @@ public class UserLoggedInMessage {
 		return userId;
 	}
 
-	public void setUserId( Integer userId ) {
-		this.userId = userId;
-	}
-
 	public String getUserName() {
 		return userName;
-	}
-
-	public void setUserName( String userName ) {
-		this.userName = userName;
-	}
-
-	public Date getTimestamp() {
-		return timestamp;
 	}
 }
