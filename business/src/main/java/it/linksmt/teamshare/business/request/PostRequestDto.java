@@ -3,17 +3,20 @@ package it.linksmt.teamshare.business.request;
 import java.io.Serializable;
 import java.util.Date;
 
-public class PostRequestDto implements Serializable {
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-	/**
-	 * 
-	 */
+public class PostRequestDto implements Serializable {
 	private static final long serialVersionUID = -1387886715308234152L;
 
+	@NotBlank
 	private String titoloPost;
+	@NotBlank
 	private String descrizionePost;
 	private String riferimentoPost;
+	@NotNull
 	private Integer idUtente;
+	@NotNull
 	private Date dataPost;
 	
 	public String getTitoloPost() {

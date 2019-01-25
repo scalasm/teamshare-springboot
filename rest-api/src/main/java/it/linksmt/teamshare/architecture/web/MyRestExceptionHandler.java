@@ -82,25 +82,23 @@ public class MyRestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	private GlobalValidationError toGlobalValidationError( ObjectError fe ) {
-		String errorMessage = messageSource.getMessage( fe.getCode(), fe.getArguments(), LocaleContextHolder.getLocale() );
+		String errorMessage = messageSource.getMessage( fe.getCode(), fe.getArguments(), 
+				fe.getCode(),
+				LocaleContextHolder.getLocale() );
 		
 		return new GlobalValidationError( errorMessage );
 	}
 	
-	private static FieldValidationError toFieldError( FieldError fe ) {
+	private FieldValidationError toFieldError( FieldError fe ) {
 		// Nota: se volete il messaggio in testo libero (es. ""must not be blank") usate la riga commentata invece
 //		String validationErrorCode = hasText( fe.getDefaultMessage() ) ? fe.getDefaultMessage() : fe.getCode();
 
 		String validationErrorCode = fe.getCodes()[0];
-		
-		return new FieldValidationError( fe.getField(), validationErrorCode );
-	}
 
-	private static List<String> toStrings( Object[] arguments ) {
-		List<String> stringArgs = new ArrayList<>();
-		if (arguments != null) {
-			stringArgs = Arrays.stream( arguments ).map( (o) -> o.toString() ).collect( Collectors.toList() );
-		}
-		return stringArgs;
+		String errorMessage = messageSource.getMessage( validationErrorCode, fe.getArguments(), 
+				validationErrorCode,
+				LocaleContextHolder.getLocale() );
+		
+		return new FieldValidationError( fe.getField(), errorMessage );
 	}
 }
