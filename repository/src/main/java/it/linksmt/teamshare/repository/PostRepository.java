@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 import it.linksmt.teamshare.entities.Post;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-	Post findById( Integer id );
 }
