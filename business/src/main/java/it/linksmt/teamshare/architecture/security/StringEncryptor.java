@@ -16,6 +16,7 @@ import it.linksmt.teamshare.architecture.MySecurityException;
  * @author mario
  */
 public interface StringEncryptor {
+	@SuppressWarnings( "serial" )
 	public static class StringEncryptorException extends MySecurityException {
 
 		public StringEncryptorException( String message, Throwable cause ) {

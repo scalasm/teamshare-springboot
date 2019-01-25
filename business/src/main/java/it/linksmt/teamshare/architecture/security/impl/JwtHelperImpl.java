@@ -112,7 +112,6 @@ public class JwtHelperImpl implements JwtHelper {
 	private String decryptTokenIfNeeded( String encryptedToken ) {
 		String decryptedToken = encryptedToken;
 		if (jwtProperties.getEnableTokenEncryption()) {
-			// TODO 
 			decryptedToken = stringEncryptor.decrypt( encryptedToken );
 		}
 		return decryptedToken;

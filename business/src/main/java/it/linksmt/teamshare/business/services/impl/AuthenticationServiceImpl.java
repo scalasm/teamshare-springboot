@@ -8,19 +8,19 @@
  *******************************************************************************/
 package it.linksmt.teamshare.business.services.impl;
 
-import java.util.UUID;
+import static it.linksmt.teamshare.architecture.security.JwtHelper.Claim.claim;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.linksmt.teamshare.architecture.MySecurityException;
 import it.linksmt.teamshare.architecture.security.JwtHelper;
+import it.linksmt.teamshare.architecture.security.MyJwtClaims;
 import it.linksmt.teamshare.architecture.security.MyUserDetails;
 import it.linksmt.teamshare.architecture.security.UserSessionManager;
 import it.linksmt.teamshare.business.dtos.UserAuthenticationDto;
@@ -35,6 +35,8 @@ import it.linksmt.teamshare.repository.UserRepository;
 @Service
 @Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
+
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -93,8 +95,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	private String createJwt( User user ) {
-		
-		
-		return UUID.randomUUID().toString();
+		return jwtHelper.create( 
+				claim( MyJwtClaims.UTENTE_NOME, user.getNome() ), 
+				claim( MyJwtClaims.UTENTE_COGNOME, user.getCognome() ) );
 	}
 }

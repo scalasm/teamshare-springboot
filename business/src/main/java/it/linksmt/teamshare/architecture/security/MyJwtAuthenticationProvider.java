@@ -14,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 /**
  * Gestisce le richieste di autenticazione relative al {@link MyJwtAuthentication} producendo, in caso positivo, un {@link MyAuthenticationToken}.
  * 
@@ -24,6 +26,9 @@ public class MyJwtAuthenticationProvider implements AuthenticationProvider {
 	@Autowired
 	private UserSessionManager sessionManager;
 	
+	@Autowired
+	private JwtHelper jwtHelper;
+	
 	/* (non-Javadoc)
 	 * @see org.springframework.security.authentication.AuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
 	 */
@@ -31,7 +36,7 @@ public class MyJwtAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate( Authentication authentication ) throws AuthenticationException {
 		MyJwtAuthentication jwt = (MyJwtAuthentication) authentication;	
 	
-		// TODO Check and validate JWT 
+		jwtHelper.verify( jwt.getToken() );
 		
 		MyUserDetails userDetails = sessionManager.getSessionByJwt( jwt.getToken() );
 		
